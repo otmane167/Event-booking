@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
+
     private final UserService userService;
 
     @PostMapping
@@ -28,5 +29,10 @@ public class UserController {
                 .stream()
                 .map(userService::toDto)
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping("/{id}")
+    public UserResponseDTO findById(@PathVariable Long id) {
+        return userService.toDto(userService.findById(id));
     }
 }
