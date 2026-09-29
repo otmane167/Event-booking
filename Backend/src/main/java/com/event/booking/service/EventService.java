@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface EventService {
     Event create(Event event, Long organizerId);
+    Event update(Long id, Event event, Long organizerId);
+    void delete(Long id, Long organizerId);
     List<Event> findAll();
     Event findById(Long id);
     EventResponseDTO toDto(Event event);

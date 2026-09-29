@@ -23,6 +23,16 @@ public class EventController {
         return eventService.toDto(saved);
     }
 
+    @PutMapping("/{id}")
+    public EventResponseDTO update(@PathVariable Long id, @Valid @RequestBody Event event, @RequestParam Long organizerId) {
+        return eventService.toDto(eventService.update(id, event, organizerId));
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id, @RequestParam Long organizerId) {
+        eventService.delete(id, organizerId);
+    }
+
     @GetMapping
     public List<EventResponseDTO> findAll() {
         return eventService.findAll()

@@ -18,9 +18,19 @@ public class TicketTypeController {
     private final TicketTypeService ticketTypeService;
 
     @PostMapping
-    public TicketTypeResponseDTO create(@Valid @RequestBody TicketType ticketType, @RequestParam Long eventId) {
-        TicketType saved = ticketTypeService.create(ticketType, eventId);
+    public TicketTypeResponseDTO create(@Valid @RequestBody TicketType ticketType, @RequestParam Long eventId, @RequestParam Long organizerId) {
+        TicketType saved = ticketTypeService.create(ticketType, eventId, organizerId);
         return ticketTypeService.toDto(saved);
+    }
+
+    @PutMapping("/{id}")
+    public TicketTypeResponseDTO update(@PathVariable Long id, @Valid @RequestBody TicketType ticketType, @RequestParam Long organizerId) {
+        return ticketTypeService.toDto(ticketTypeService.update(id, ticketType, organizerId));
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id, @RequestParam Long organizerId) {
+        ticketTypeService.delete(id, organizerId);
     }
 
     @GetMapping
