@@ -196,6 +196,3 @@ The repository includes a `docker-compose.yml` with PostgreSQL, backend, and fro
 docker compose up --build
 ```
 
-## License
-
-This project is available for learning and portfolio use. Add a license file before publishing it for broader reuse.
