@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Replace with your stack's setup, e.g. actions/setup-node or actions/setup-python
+      - name: Install dependencies
+        run: echo "install deps here"
+
+      - name: Run tests
+        run: echo "run tests here"
+
+      - name: Build Docker image
+        run: docker build -t myapp:${{ github.sha }} .
