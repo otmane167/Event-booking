@@ -11,7 +11,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Replace with your stack's setup, e.g. actions/setup-node or actions/setup-python
+      - name: Show files
+        run: ls -la
+
       - name: Install dependencies
         run: echo "install deps here"
 
@@ -19,4 +21,4 @@ jobs:
         run: echo "run tests here"
 
       - name: Build Docker image
-           run: docker build -t myapp:${{ github.sha }} -f backend/Dockerfile backend
+        run: docker build -t myapp:${{ github.sha }} -f backend/Dockerfile backend
