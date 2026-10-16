@@ -44,7 +44,7 @@ public class BookingConcurrencyTest {
         user.setPrenom("User");
         user.setEmail("concurrency-" + UUID.randomUUID() + "@example.com");
         user.setPassword("password");
-        user.setRole(Role.Role); // change if your enum value is named differently
+        user.setRole(Role.ORGANIZER); // change if your enum value is named differently
         user = userRepository.saveAndFlush(user);
         userId = user.getId();
 
