@@ -11,7 +11,7 @@ services:
       - pgdata:/var/lib/postgresql/data
 
   backend:
-    build: ./backend
+    build: ./Backend
     ports:
       - "8080:8080"
     environment:
@@ -22,7 +22,7 @@ services:
       - postgres
 
   frontend:
-    build: ./frontend
+    build: ./Frontend
     ports:
       - "3000:80"
     depends_on:
