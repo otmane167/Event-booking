@@ -6,17 +6,66 @@ on:
   pull_request:
 
 jobs:
-  build-and-test:
+  backend:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Backend
+    services:
+      db:
+        image: postgres:16
+        env:
+          POSTGRES_DB: eventbooking
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/eventbooking
+      SPRING_DATASOURCE_USERNAME: test
+      SPRING_DATASOURCE_PASSWORD: test
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      # If your app needs a JWT secret, uncomment and match your property name
+      # JWT_SECRET: test-secret-for-ci-only-change-me-1234567890-abcdef
     steps:
       - uses: actions/checkout@v4
 
-      # Replace with your stack's setup, e.g. actions/setup-node or actions/setup-python
-      - name: Install dependencies
-        run: echo "install deps here"
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
 
-      - name: Run tests
-        run: echo "run tests here"
+      - name: Make mvnw executable
+        run: chmod +x mvnw
+
+      - name: Build and test
+        run: ./mvnw -B verify
 
       - name: Build Docker image
-           run: docker build -t myapp:${{ github.sha }} -f backend/Dockerfile backend
+        run: docker build -t event-booking-backend:${{ github.sha }} .
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: Frontend/package-lock.json
+
+      - run: npm ci
+      - run: npm run build
+
+      - name: Build Docker image
+        run: docker build -t event-booking-frontend:${{ github.sha }} .
